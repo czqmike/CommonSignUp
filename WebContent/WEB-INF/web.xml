@@ -4,7 +4,7 @@
 
   <servlet>
     <servlet-name>GetAddItemsServlet</servlet-name>
-    <servlet-class>cn.edu.hbue.CommonSignUp.servlet.GetAddItemsServlet</servlet-class>
+    <servlet-class>cn.edu.hbue.servlet.GetAddItemsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GetAddItemsServlet</servlet-name>
