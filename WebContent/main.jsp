@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, cn.edu.hbue.dao.*" %>
 <!DOCTYPE html>
 
-<% String page_title="test"; %>
-<% String[] item_arr = {"栏目1","栏目2","栏目3"};  %>
+<% String page_title = new String(request.getParameter("subject_title").getBytes("ISO8859-1"),"UTF-8"); %>
+
+<%-- 先用page_title在title_to_id中选出id，然后用id查出addon_item[id]中的附加项名 --%>
+<% ArrayList<String> name_list = AddonItemDao.selectAddonNamesById(
+									TitleToIdDao.selectId(page_title));  %>
 
 <html>
 <head>
@@ -24,11 +28,10 @@
       background-color: #8080c0;  /*图片未加载成功时的备用背景色*/
     }
   </style>
-<meta charset="UTF-8">
 </head>
 
 <body>
-<form action="GetSignInfo" method="POST">
+<form action="GetMainServlet" method="POST">
   <div class="container">
 	<br/>
 	<div class="jumbotron">
@@ -40,6 +43,10 @@
 		<!-- 每个[name]对应数据库表中的字段名（把-改成_) -->
 		<div class="col-md-5">
 		  <h2 class="text-center"><%=page_title %></h2>
+		  
+		  <!--  隐藏的输入框，用来传递page_title以方便后续处理 -->
+		  <input type="hidden" name="page-title" value="<%=page_title %>">
+		  
 		  <div class="input-group input-group-md">
 			<span class="input-group-addon">姓名</span>
 			<input type="text" class="form-control" placeholder="请输入姓名" aria-describedby="sizing-addon1" name="name" id="name" required>
@@ -77,15 +84,15 @@
 		  </div>
 		  <br/>
 		 
-		  <% for (int i = 0; i < item_arr.length; ++i) { %> 
+		  <% for (int i = 0; i < name_list.size(); ++i) { %> 
 			  <div class="input-group input-group-md"> 
-			  <span class="input-group-addon"> <%=item_arr[i] %>  </span> 
-			  <input type="text" class="form-control" placeholder="请输入<%=item_arr[i] %>" name="<%=item_arr[i] %>" id="<%=item_arr[i]%>"> 
+			  <span class="input-group-addon"> <%=name_list.get(i) %>  </span> 
+			  <input type="text" class="form-control" placeholder="请输入<%=name_list.get(i) %>" name="<%=name_list.get(i) %>" id="<%=name_list.get(i) %>"> 
 			  </div>
 			  <br/>  
 		  <% } %>
 
-		  <button class="btn btn-primary  btn-block" type="submit" name="sign-up">立即报名</button>
+		  <button class="btn btn-primary  btn-block" type="submit">立即报名</button>
 		</div>
 
 		<div class="col-md-4"><p></p></div> <!--不使用-->

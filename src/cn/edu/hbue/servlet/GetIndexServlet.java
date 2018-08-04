@@ -1,31 +1,25 @@
 package cn.edu.hbue.servlet;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.edu.hbue.dao.*;
-
-/**
- * Servlet implementation class GetAddItemsServlet
- */
 /**
  * @author czqmike
- * @date 2018年8月3日
- **接收用户传回的附加项字符串（以【`】为分隔符）
+ * @date 2018年8月4日
+ * @description 获取index页面传送的project_title，并且重定向至main.jsp
  */
-@WebServlet("/GetAddItemsServlet")
-public class GetAddItemsServlet extends HttpServlet {
+@WebServlet("/GetIndexServlet")
+public class GetIndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetAddItemsServlet() {
+    public GetIndexServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,17 +28,9 @@ public class GetAddItemsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		String items = new String(request.getParameter("data").getBytes("ISO8859-1"),"UTF-8");
-		String items = new String(request.getParameter("data"));
-		String[] item_arr = items.split("`");
-		String title = request.getParameter("title");
-	
-		// 插入标题，id为自增
-		TitleToIdDao.insert(title);
-	
-		// 取出最大的id，（也是最后插入的），然后以这个id创建附加表
-		AddonItemDao.CreateTable(item_arr, TitleToIdDao.selectId(title));
-
+		String selected = request.getParameter("subject_title");
+		
+		response.sendRedirect("main.jsp?subject_title=" + selected);
 	}
 
 	/**

@@ -2,6 +2,7 @@ package cn.edu.hbue.dao;
 
 import cn.edu.hbue.util.JDBCUtil;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * @author czqmike
@@ -34,7 +35,7 @@ public class TitleToIdDao {
 	 * @param 报名标题
 	 * @return  如果查询成功，返回id，否则，返回-1
 	 */
-	public static int select(String title) {
+	public static int selectId(String title) {
 		Connection conn = JDBCUtil.getConn();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -44,6 +45,7 @@ public class TitleToIdDao {
 					 "FROM signupdb.title_to_id " + 
 					 "WHERE subject_title = ?" + 
 					 "ORDER by addon_id DESC"; 
+
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, title);
@@ -60,5 +62,36 @@ public class TitleToIdDao {
 		}
 		
 		return id;
+	}
+	
+	/**
+	 * @return 全部的标题名（每种只出现一次）
+	 */
+	public static ArrayList<String> selectName() {
+		Connection conn = JDBCUtil.getConn();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = "select subject_title from signupdb.title_to_id " + 
+					 "group by subject_title ";
+		
+		ArrayList<String> title_list = new ArrayList<String>();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				title_list.add(rs.getString("subject_title"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeConn(stmt, conn);
+		}
+		
+		return title_list;
+		
 	}
 }
