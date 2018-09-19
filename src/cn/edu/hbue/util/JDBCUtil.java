@@ -9,13 +9,14 @@ import java.sql.*;
  */
 public class JDBCUtil {
 	static String username = "root";
-	static String password = "123456";
+//	static String password = "123456";
+	static String password = "GXsRyeMwCTfv";
 	
 	public static Connection getConn(){
 		Connection connection = null;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/signupdb?"
+			String url = "jdbc:mysql://czqmike-server.cn:3306/signupdb?"
 					+ "user=" + username + "&password=" + password;
 			connection = DriverManager.getConnection(url);
 		} catch (ClassNotFoundException e1){

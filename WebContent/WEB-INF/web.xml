@@ -2,6 +2,15 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>CommonSignUp</display-name>
 
+  <filter>
+    <filter-name>CreateAddItemsFilter</filter-name>
+    <filter-class>cn.edu.hbue.filter.CreateAddItemsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CreateAddItemsFilter</filter-name>
+    <url-pattern>/CreateAddItems.html</url-pattern>
+  </filter-mapping>
+
   <servlet>
     <servlet-name>GetAddItemsServlet</servlet-name>
     <servlet-class>cn.edu.hbue.servlet.GetAddItemsServlet</servlet-class>
@@ -26,7 +35,6 @@
     <servlet-name>GetMainServlet</servlet-name>
     <url-pattern>/CommonSignUp/GetMainServlet</url-pattern>
   </servlet-mapping>
-
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>

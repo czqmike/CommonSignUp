@@ -24,7 +24,7 @@
   </style>
 </head>
 <body>
-	<h1 class="text-center">index页面title</h1>
+	<h1 class="text-center">报名系统</h1>
 	<% ArrayList<String> subject_titles = TitleToIdDao.selectName(); %>
 	<form action="GetIndexServlet" method="GET">
 

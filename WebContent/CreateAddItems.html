@@ -29,26 +29,62 @@
       // 添加项目的按钮，仅实现了添加文本框。
       $("#add-item").click(function(){
         var item_name = $("#item-name").val();
+        var item_type = $("#item-type").val();
+        var item_value = $("#item-value").val();
+
         if (item_name === "") {
           alert("栏目名为空！");
+        } else if (item_type === "栏目类型"){
+          alert("请选择栏目类型！");
+        } else if (item_value === ""){
+          alert("栏目值为空！")
         } else {
-          $("#sign-up").before(
+
+          if (item_type === "文本框") { // 添加文本框
+            $("#sign-up").before(
               '<div class="input-group input-group-md">' +
               '<span class="input-group-addon">' + item_name + '</span>' +
               '<input type="text" class="form-control" placeholder="请输入' + item_name + '" name="' + item_name + '" id="' + item_name + '">' +
-              '</div> <br/>'  
-          );
-          // 将栏目拼接成一个以`分隔的字符串(1左边那个字符)
-          if (first != true) {
-            items += "`";
+              '</div> <br/>'
+            );
+            // 将栏目名拼接成一个以`分隔的字符串(1左边那个字符)
+            if (first != true) {
+              items += "`";
+            }
+            items += item_name;
+            first = false;
+
+          } else if (item_type === "下拉菜单") { // 添加下拉菜单
+            var ops;
+            var value_arr = item_value.split(" "); 
+            for (var i = 0; i < value_arr.length; ++i) {
+              ops += "<option>" + value_arr[i] + "</option>";
+            }
+            $("#sign-up").before(
+              '<div class="input-group input-group-md">' + 
+              '<span class="input-group-addon">' + item_name + '</span>' +
+              '<select class="form-control input-md" name="' + item_name + '" id="' + item_name + '"> ' +
+                '<option>请选择' + item_name + '</option>' +
+                ops +
+                  // <option>其他</option>
+                '</select>' +
+              '</div> <br/>'
+            );
+
+          } else if (item_type === "单选按钮") {
+
+          } else if (item_type === "复选按钮") {
+
+          } else if (item_type === "图片上传区域") {
+
           }
-          items += item_name;
-          first = false;
 
           $("#item-name").val("");  // 清空栏目名
+          $("#item-value").val(""); // 清空栏目值
         }
       });
-
+      
+      // TODO: 添加发送item_value
       // 提交时先检查有没有填写报名名称，如果没填，则给予警告
       // 将名称添加在字符串的尾部，以`分隔 
       $("#submit").click(function() {
@@ -130,16 +166,21 @@
           <div class="alert alert-info">上方为预览效果，请在下方操作添加更多栏目</div>
 
           <div class="row">
-            <div class="col-md-4"> <input type="text" class="form-control" placeholder="请输入栏目名" id="item-name">  </div>
-            <div class="col-md-4"> <select class="form-control ">
+            <div class="col-md-6"> <input type="text" class="form-control" placeholder="请输入栏目名" id="item-name">  </div>
+            <div class="col-md-6"> <select class="form-control" id="item-type">
               <option>栏目类型</option>
               <option>文本框</option>
-              <option>单选按钮</option>
+              <!-- <option>单选按钮</option> -->
               <option>复选按钮</option>
               <option>下拉菜单</option>
             </select>  </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-8"> <input type="text" class="form-control" placeholder="请输入栏目值(若需要), 以空格隔开" id="item-value"/> </div>
             <div class="col-md-4"> <button class="btn btn-info" id="add-item" type="button">添加栏目</button> </div>
           </div>
+          <br/>
           <br/>
 
           <div class="row">
