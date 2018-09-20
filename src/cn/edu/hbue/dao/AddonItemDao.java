@@ -3,6 +3,7 @@ package cn.edu.hbue.dao;
 import java.sql.*;
 import java.util.ArrayList;
 
+import cn.edu.hbue.model.AddonItem;
 import cn.edu.hbue.util.*;
 
 /**
@@ -13,15 +14,17 @@ import cn.edu.hbue.util.*;
 public class AddonItemDao {
 
 	// 建立一张addon_items[id], 并且填充addon_name字段的值
-	public static boolean CreateTable(String[] addon_names, int addon_id) {
+	public static boolean CreateTable(ArrayList<AddonItem> items, int addon_id) {
 		boolean ok = false;
 		Connection conn = JDBCUtil.getConn();
 		PreparedStatement stmt = null;
 		String createSql = "CREATE TABLE `signupdb`.`addon_item" + Integer.toString(addon_id) + "` " + 
 					 "(`addon_name` VARCHAR(45) NOT NULL," + 
 					 "`addon_value` VARCHAR(45) NULL," + 
+					 "`type` VARCHAR(45) NOT NULL," + 
+					 "`option` VARCHAR(200) NULL," + 
 					 "PRIMARY KEY (`addon_name`))";  
-		String insertSql = "INSERT INTO `signupdb`.`addon_item" + Integer.toString(addon_id) + "` (`addon_name`) VALUES (?)"; 
+		String insertSql = "INSERT INTO `signupdb`.`addon_item" + Integer.toString(addon_id) + "` (`addon_name`, `type`, `option`) VALUES (?, ?, ?)"; 
 
 		try {
 			// 创建表
@@ -31,8 +34,10 @@ public class AddonItemDao {
 			
 			// 添加字段的数据
 			stmt = conn.prepareStatement(insertSql);
-			for (int i = 0; i < addon_names.length; ++i) {
-				stmt.setString(1, addon_names[i]);
+			for (int i = 0; i < items.size(); ++i) {
+				stmt.setString(1, items.get(i).getAddon_name());
+				stmt.setString(2, items.get(i).getType());
+				stmt.setString(3, items.get(i).getOption());
 				stmt.executeUpdate();
 			}
 			
@@ -54,6 +59,8 @@ public class AddonItemDao {
 		String createSql = "CREATE TABLE `signupdb`.`addon_item" + Integer.toString(addon_id) + "` " + 
 					 "(`addon_name` VARCHAR(45) NOT NULL," + 
 					 "`addon_value` VARCHAR(45) NULL," + 
+					 "`type` VARCHAR(45) NOT NULL," + 
+					 "`option` VARCHAR(200) NULL," + 
 					 "PRIMARY KEY (`addon_name`))";  
 
 		try {
@@ -72,6 +79,40 @@ public class AddonItemDao {
 		return ok;
 	}
 
+	/**
+	 * 选出addon_item[id]表中的全部数据
+	 * @param id（addon_item表的id）
+	 * @return ArrayList<AddonItem>
+	 */
+	public static ArrayList<AddonItem> selectAddonItemsById(int id) {
+		ArrayList<AddonItem> items = new ArrayList<AddonItem>();
+		Connection conn = JDBCUtil.getConn();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM signupdb.addon_item" + Integer.toString(id);
+		try {
+			stmt = conn.prepareStatement(sql);
+			
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				AddonItem temp = new AddonItem();
+				temp.setAddon_name(rs.getString("addon_name"));
+				temp.setAddon_value(rs.getString("addon_value"));
+				temp.setType(rs.getString("type"));
+				temp.setOption(rs.getString("option"));
+
+				items.add(temp);
+			}
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return items;
+	}
+			
 	public static ArrayList<String> selectAddonNamesById(int id) {
 		ArrayList<String> ret = new ArrayList<String>();
 		Connection conn = JDBCUtil.getConn();
@@ -103,7 +144,8 @@ public class AddonItemDao {
 		Connection conn = JDBCUtil.getConn();
 		PreparedStatement stmt = null;
 
-		String insertSql = "INSERT INTO `signupdb`.`addon_item" + Integer.toString(addon_id) + "` (`addon_name`, `addon_value`) VALUES (?, ?)"; 
+		String insertSql = "INSERT INTO `signupdb`.`addon_item" + Integer.toString(addon_id) + "` (`addon_name`, `addon_value`) "
+						 + "VALUES (?, ?)"; 
 
 		try {
 			// 添加字段的数据
@@ -122,6 +164,33 @@ public class AddonItemDao {
 		return ok;
 	}
 	
+	public static boolean insertById(AddonItem item, int addon_id) {
+		boolean ok = false;
+		Connection conn = JDBCUtil.getConn();
+		PreparedStatement stmt = null;
+
+		String insertSql = "INSERT INTO `signupdb`.`addon_item" + Integer.toString(addon_id) + "` " +
+						   "(`addon_name`, `addon_value`, `type`, `option`) " +
+						   "VALUES (?, ?, ?, ?)"; 
+
+		try {
+			// 添加字段的数据
+			stmt = conn.prepareStatement(insertSql);
+			stmt.setString(1, item.getAddon_name());
+			stmt.setString(2, item.getAddon_value());
+			stmt.setString(3, item.getType());
+			stmt.setString(4, item.getOption());
+			stmt.executeUpdate();
+			
+			ok = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeConn(stmt, conn);
+		}
+		
+		return ok;
+	}
 }
 
 

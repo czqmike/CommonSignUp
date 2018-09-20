@@ -65,6 +65,42 @@ public class TitleToIdDao {
 	}
 	
 	/**
+	 * @param 报名标题
+	 * @return 除最小的addon_id之外（模板的id）其他id组成的ArrayList
+	 * @description 通过某个报名标题名查询全部的id
+	 */
+	public static ArrayList<Integer> selectIds(String title) {
+		Connection conn = JDBCUtil.getConn();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<Integer> list = new ArrayList<Integer>();
+
+		String sql = "SELECT title_to_id.addon_id FROM " +
+					 "signupdb.title_to_id " +
+					 "where title_to_id.subject_title = ? " + 
+					 "order by addon_id ASC";
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, title);
+
+			rs = stmt.executeQuery();
+			rs.next(); // 跳过第-1行（空）和第0个结果（模板）
+			
+			while (rs.next()) {
+				list.add(rs.getInt("addon_id"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeConn(stmt, conn);
+		}
+		
+		return list;
+		
+	}
+
+	/**
 	 * @return 全部的标题名（每种只出现一次）
 	 */
 	public static ArrayList<String> selectName() {

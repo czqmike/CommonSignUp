@@ -14,6 +14,9 @@ public class CommonItems {
 	private String report_year = "";
 	private int addon_id = -1;
 	
+	public CommonItems() {
+	}
+	
 	public CommonItems(String name, String student_no, String class_, String report_year, int addon_id) {
 		super();
 		this.name = name;

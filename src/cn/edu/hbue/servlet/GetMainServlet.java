@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import cn.edu.hbue.dao.AddonItemDao;
 import cn.edu.hbue.dao.CommonItemsDao;
 import cn.edu.hbue.dao.TitleToIdDao;
+import cn.edu.hbue.model.AddonItem;
 import cn.edu.hbue.model.CommonItems;
+import cn.edu.hbue.util.ResponseUtil;
 
 /**
  * @author czqmike
@@ -47,6 +50,10 @@ public class GetMainServlet extends HttpServlet {
 		String class_ = new String(request.getParameter("class").getBytes("ISO-8859-1"), "UTF-8");
 		String report_year = new String(request.getParameter("report-year").getBytes("ISO-8859-1"), "UTF-8");
 		
+		// 获取模板的addon_item表的id, 并选出模板的数据，方便复制
+		int last_id = TitleToIdDao.selectId(page_title);
+		ArrayList<AddonItem> addonItems = AddonItemDao.selectAddonItemsById(last_id);
+
 		// 插入一条新记录到title_to_id，获取id
 		TitleToIdDao.insert(page_title);
 		int addon_id = TitleToIdDao.selectId(page_title);
@@ -60,8 +67,7 @@ public class GetMainServlet extends HttpServlet {
 		AddonItemDao.CreateTable(addon_id);
 		
 		// 在addon_item[id]中插入各addon_name & addon_value
-		ArrayList<String> addonNames = new ArrayList<String>();
-		ArrayList<String> addonValues = new ArrayList<String>();
+		HashMap<String, String> map = new HashMap(); 		// 此map存储获得的(addon_name, addon_value)键值对
 		Enumeration<String> paraNames = request.getParameterNames();
 		while (paraNames.hasMoreElements()) {
 			String paraName = paraNames.nextElement();
@@ -69,16 +75,27 @@ public class GetMainServlet extends HttpServlet {
 				paraName.equals("student-no") || paraName.equals("class") || paraName.equals("report-year")) {
 				continue ;
 			}
-			addonNames.add(new String(paraName.getBytes("ISO8859-1"), "UTF-8"));
-			addonValues.add(new String(request.getParameter(paraName).getBytes("ISO8859-1"),"UTF-8"));
+			map.put(new String(paraName.getBytes("ISO8859-1"), "UTF-8"), 
+					new String(request.getParameter(paraName).getBytes("ISO8859-1"),"UTF-8"));
 		}
-		for (int i = 0; i < addonNames.size(); ++i) {
-			AddonItemDao.insertById(addonNames.get(i), addonValues.get(i), addon_id);
+		
+		boolean ok = true;
+		for (int i = 0; i < addonItems.size(); ++i) {
+			AddonItem temp = new AddonItem(addonItems.get(i));
+			temp.setAddon_value(map.get(temp.getAddon_name()));
+			
+			if (!AddonItemDao.insertById(temp, addon_id)) {
+				ok = false;
+			}
 		}
 
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		out.println("<h1> 报名成功！:) </h1>");
+		if (ok) {
+			ResponseUtil.showSuccess(response, "报名成功！:)");
+		} else {
+			ResponseUtil.showError(response, "出现错误，请与管理员联系(T_T)");
+		}
 	}
 
 	/**
