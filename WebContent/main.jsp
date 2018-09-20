@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, cn.edu.hbue.dao.*" %>
+<%@ page import="java.util.*, cn.edu.hbue.dao.*, cn.edu.hbue.model.*" %>
 <!DOCTYPE html>
 
 <% String page_title = new String(request.getParameter("subject_title").getBytes("ISO8859-1"),"UTF-8"); %>
 
-<%-- 先用page_title在title_to_id中选出id，然后用id查出addon_item[id]中的附加项名 --%>
-<% ArrayList<String> name_list = AddonItemDao.selectAddonNamesById(
+<%-- 先用page_title在title_to_id中选出id，然后用id查出addon_item[id]中的各项 --%>
+<% ArrayList<AddonItem> items = AddonItemDao.selectAddonItemsById(
 									TitleToIdDao.selectId(page_title));  %>
 
 <html>
@@ -83,13 +83,30 @@
 			</select>
 		  </div>
 		  <br/>
-		 
-		  <% for (int i = 0; i < name_list.size(); ++i) { %> 
+			
+		<!-- TODO: 修改此项，使其能够插入下拉菜单以及图片选择区域 --> 
+		  <% for (int i = 0; i < items.size(); ++i) { %> 
+		  	<% if ("文本框".equals(items.get(i).getType())) { %>
 			  <div class="input-group input-group-md"> 
-			  <span class="input-group-addon"> <%=name_list.get(i) %>  </span> 
-			  <input type="text" class="form-control" placeholder="请输入<%=name_list.get(i) %>" name="<%=name_list.get(i) %>" id="<%=name_list.get(i) %>"> 
+			  <span class="input-group-addon"> <%=items.get(i).getAddon_name() %>  </span> 
+			  <input type="text" class="form-control" placeholder="请输入<%=items.get(i).getAddon_name() %>" 
+			  		 name="<%=items.get(i).getAddon_name() %>" id="<%=items.get(i).getAddon_name() %>"> 
 			  </div>
 			  <br/>  
+		    <% } else if ("下拉菜单".equals(items.get(i).getType())) { %>
+			  <div class="input-group input-group-md">  
+              <span class="input-group-addon"> <%=items.get(i).getAddon_name() %> </span> 
+              <select class="form-control input-md" name=<%=items.get(i).getAddon_name() %> id=<%=items.get(i).getAddon_name() %>>  
+                <option>请选择<%=items.get(i).getAddon_name() %></option> 
+                <% String[] ops = items.get(i).getOption().split("`"); %>
+                <% for (int j = 0; j < ops.length; ++j) { %>
+                	<option><%=ops[j] %></option>
+				<% } %>
+                </select> 
+              </div> <br/> 
+			<% } else if ("复选按钮".equals(items.get(i).getType())) { %>
+			<% } else if ("图片上传区域".equals(items.get(i).getType())) { %>
+		    <% } %>
 		  <% } %>
 
 		  <button class="btn btn-primary  btn-block" type="submit">立即报名</button>

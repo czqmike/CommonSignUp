@@ -21,22 +21,25 @@
   </style>
   <script>
     //TODO: 添加适配更多栏目类型的代码
+    var items = [];   // 装每一个附加项的数组
 
-    var items = "";
-    var first = true;
     $(document).ready(function() {
 
       // 添加项目的按钮，仅实现了添加文本框。
       $("#add-item").click(function(){
+        var item = new Object;
         var item_name = $("#item-name").val();
         var item_type = $("#item-type").val();
-        var item_value = $("#item-value").val();
+        var item_value = $.trim($("#item-value").val()); // $.trim() : 去除字符串首尾的空格
+        item.item_name = item_name;
+        item.item_type = item_type;
+        item.item_value = item_value.split(" ");
 
         if (item_name === "") {
           alert("栏目名为空！");
         } else if (item_type === "栏目类型"){
           alert("请选择栏目类型！");
-        } else if (item_value === ""){
+        } else if (item_type === "下拉菜单" && item_value === ""){
           alert("栏目值为空！")
         } else {
 
@@ -47,16 +50,11 @@
               '<input type="text" class="form-control" placeholder="请输入' + item_name + '" name="' + item_name + '" id="' + item_name + '">' +
               '</div> <br/>'
             );
-            // 将栏目名拼接成一个以`分隔的字符串(1左边那个字符)
-            if (first != true) {
-              items += "`";
-            }
-            items += item_name;
-            first = false;
 
           } else if (item_type === "下拉菜单") { // 添加下拉菜单
             var ops;
-            var value_arr = item_value.split(" "); 
+
+            var value_arr = item.item_value;
             for (var i = 0; i < value_arr.length; ++i) {
               ops += "<option>" + value_arr[i] + "</option>";
             }
@@ -81,6 +79,8 @@
 
           $("#item-name").val("");  // 清空栏目名
           $("#item-value").val(""); // 清空栏目值
+
+          items.push(item);   
         }
       });
       
@@ -93,8 +93,10 @@
           alert("请输入报名名称！");          
         } else {
           $.post("/CommonSignUp/GetAddItemsServlet",  //$.post(URL, data, callBackFunction)
-            {data : items, 
-             title : title},
+            {
+              report_title : title, 
+              items : JSON.stringify(items)
+            },
             function(data,status) {
               if (status === "success") {
                 alert("提交成功！:-)");
