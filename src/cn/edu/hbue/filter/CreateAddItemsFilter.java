@@ -45,7 +45,8 @@ public class CreateAddItemsFilter implements Filter {
 		String pw = request.getParameter("password");
 		if (un == null && pw == null) {
 			HttpServletResponse hsres = (HttpServletResponse)response;
-			hsres.sendRedirect("/CommonSignUp/AdminLogIn.html");
+//			hsres.sendRedirect("/CommonSignUp/AdminLogIn.html");
+			hsres.sendRedirect("/AdminLogIn.html"); 	// In Server
 			return ;
 		}
 		

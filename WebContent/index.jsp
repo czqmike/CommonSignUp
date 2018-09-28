@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>报名系统index页面</title>
+  <title>湖北经济学院比赛报名系统</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">  
   <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
@@ -49,10 +49,21 @@
   #item6 {
     background: url("https://raw.githubusercontent.com/czqmike/CommonSignUp/master/WebContent/image/banner6.png") center center no-repeat;
   }
+ #large-header{
+      position: absolute; 
+      left: 0px; 
+      top: 0px; 
+      z-index: -2147483645; 
+      background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0);    
+      height:469px;
+  } 
+  body {
+       background-color: #2a2a2a; 
+  }
   </style>
 </head>
 <body>
-    <img src="https://raw.githubusercontent.com/czqmike/CommonSignUp/master/WebContent/image/logo1.jpg" class="col-centered"style="width: auto; height: 115px;">
+    <img src="https://raw.githubusercontent.com/czqmike/CommonSignUp/master/WebContent/image/logo1.png" class="col-centered"style="width: auto; height: 115px;">
 
     <!-- 轮播 -->
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -97,21 +108,32 @@
 	<% ArrayList<String> subject_titles = TitleToIdDao.selectName(); %>
 	<form action="GetIndexServlet" method="GET">
 
-	<div class="row row-centered">
-	  <div class="col-md-3 col-centered">
-		<select class="form-control input-md" name="subject_title" id="subject_title">
+	<!-- <div class="row row-centered"> -->
+	  <!-- <div class="col-md-3 col-centered"> -->
+        <select class="form-control input-md row-centered col-centered" name="subject_title" id="subject_title" 
+            style="width: 380px; text-align: center; ">
 	    <% for (int i = 0; i < subject_titles.size(); ++i ) { %> 	
 		<option><%=subject_titles.get(i) %></option>
 	    <% } %>
 		</select>
-      </div>
+      <!-- </div> -->
       <br/>
 
-	  <div class="col-md-6 col-centered">
-		<button class="btn btn-primary" type="submit" style="width: 380px">选择此报名</button>
-	  </div>
-	</div>
+	  <!-- <div class="col-md-6 col-centered"> -->
+		<button class="btn btn-primary row-centered col-centered" type="submit" style="width: 380px; text-align: center; ">选择此报名</button>
+	  <!-- </div> -->
+	<!-- </div> -->
 	
 	</form>	
+	  <div id="large-header">
+		<canvas id="demo-canvas" width="1680" height="469">
+		</canvas>
+	  </div>
+	  <!-- <script src="net.js"></script> -->  
+	  <!-- 網狀特效1 -->
+	  <script src="js/EasePack.min.js"></script>
+	  <script src="js/TweenLite.min.js"></script>
+	  <script src="js/helloweb.js"></script> 
+	  <!-- 網狀特效2 -->
 </body>
 </html>
