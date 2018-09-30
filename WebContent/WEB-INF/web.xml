@@ -8,7 +8,7 @@
   </filter>
   <filter-mapping>
     <filter-name>CreateAddItemsFilter</filter-name>
-    <url-pattern>/CreateAddItems.html</url-pattern>
+    <url-pattern>/Admin.jsp</url-pattern>
   </filter-mapping>
 
   <servlet>

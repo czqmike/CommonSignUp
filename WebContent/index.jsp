@@ -58,12 +58,12 @@
       height:469px;
   } 
   body {
-       background-color: #2a2a2a; 
+        background-color: #2a2a2a;  
   }
   </style>
 </head>
 <body>
-    <img src="https://raw.githubusercontent.com/czqmike/CommonSignUp/master/WebContent/image/logo1.png" class="col-centered"style="width: auto; height: 115px;">
+    <img src="https://raw.githubusercontent.com/czqmike/CommonSignUp/master/WebContent/image/logo1.png" class="img-responsive center-block"style="width: auto; height: 115px;">
 
     <!-- 轮播 -->
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -120,11 +120,15 @@
       <br/>
 
 	  <!-- <div class="col-md-6 col-centered"> -->
-		<button class="btn btn-primary row-centered col-centered" type="submit" style="width: 380px; text-align: center; ">选择此报名</button>
+		<button class="btn btn-primary center-block" type="submit" style="width: 380px;">选择此报名</button>
 	  <!-- </div> -->
 	<!-- </div> -->
 	
 	</form>	
+	<br/>
+
+    <p style="text-align: center;"><a href="https://czqmike-server.cn/AdminLogIn.html" style="color: #fff;">管理员登录</a></p>
+
 	  <div id="large-header">
 		<canvas id="demo-canvas" width="1680" height="469">
 		</canvas>
