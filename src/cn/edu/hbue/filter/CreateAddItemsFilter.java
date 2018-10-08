@@ -46,14 +46,15 @@ public class CreateAddItemsFilter implements Filter {
 		if (un == null && pw == null) {
 			HttpServletResponse hsres = (HttpServletResponse)response;
 //			hsres.sendRedirect("/CommonSignUp/AdminLogIn.html");
-			hsres.sendRedirect("/AdminLogIn.html"); 	// In Server
+			hsres.sendRedirect("/Admin.jsp"); 	// In Server
 			return ;
 		}
 		
 		if (username.equals(request.getParameter("username")) && password.equals(request.getParameter("password")) ) {
 			chain.doFilter(request, response);
 		} else {
-			response.getWriter().print("<h1>管理员用户名或密码错误！</h1>");
+			response.getWriter().print("<h1>管理员用户名或密码错误！<br/>3秒后返回</h1>");
+			((HttpServletResponse) response).setHeader("refresh", "3;url=/AdminLogIn.html");
 		}
 
 		// pass the request along the filter chain

@@ -22,14 +22,14 @@
       margin-right: auto;
   }
   .carousel .item{
-      height: 380px;
+      height: 420px;
       background-color: #fff;   /* 没有图片填充的地方，使用白色来填充。*/
   }
   #carousel-example-generic {
       text-align: center;
       /* width: 492.8px; */
       width:100%;
-      height: 380px;
+      height: 420px;
   }
   #item1 {
     background: url("https://raw.githubusercontent.com/czqmike/CommonSignUp/master/WebContent/image/banner1.png") center center no-repeat;

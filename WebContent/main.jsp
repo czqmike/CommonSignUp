@@ -60,9 +60,9 @@
 		  <br/>
 
 		  <div class="input-group input-group-md">
-			<span class="input-group-addon">班级</span>
+			<span class="input-group-addon">专业</span>
 			<select class="form-control input-md" name="class" id="class">
-			  <option>请选择班级</option>
+			  <option>请选择专业</option>
 			  <option>计科</option>
 			  <option>软件</option>
 			  <option>物联</option>
