@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, cn.edu.hbue.dao.*" %>
 <!DOCTYPE html>
 <html>
 
@@ -46,7 +47,7 @@
         if (selected == undefined) {
             alert("请选择某一项");
         } else {
-            // TODO: 添加向服务器发送AJAX请求以生成excel的代码
+            window.location.href = "/CommonSignUp/GiveExcelServlet?title=" + selected;
         }
       });
     });
@@ -67,7 +68,21 @@
               <th>选择</th>
             </tr>
           </thead>
+
+		<%-- 获取报名标题列表--%>
+		<% HashMap<String, Integer> ov = TitleToIdDao.selectOverview(); %>
+
           <tbody>
+          	<% Iterator it = ov.entrySet().iterator(); %>
+          	<% while (it.hasNext()) { %>
+          	  <% Map.Entry entry = (Map.Entry)it.next(); %>
+          	  	 <tr>
+          	  	   <td><%=entry.getKey() %></td>
+          	  	   <td><%=entry.getValue() %></td>
+          	  	   <td><input type="radio" name="selected" value=<%=entry.getKey() %>></td>
+          	  	 </tr>
+          	<% } %>
+          	<!--  
             <tr id="tr1">
               <td>蓝桥杯报名</td>
               <td>20</td>
@@ -78,6 +93,7 @@
               <td>41</td>
               <td><input type="radio" name="selected" value="天梯赛报名"></td>
             </tr>
+            -->
           </tbody>
         </table>
 

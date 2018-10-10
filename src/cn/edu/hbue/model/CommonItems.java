@@ -10,20 +10,23 @@ public class CommonItems {
 	
 	private String name = "";
 	private String student_no = "";
+	private String major = "";
 	private String class_ = "";
 	private String report_year = "";
 	private int addon_id = -1;
+	private int property_number = 5;
 	
 	public CommonItems() {
 	}
 	
-	public CommonItems(String name, String student_no, String class_, String report_year, int addon_id) {
+	public CommonItems(String name, String student_no, String major, String class_, String report_year, int addon_id) {
 		super();
 		this.name = name;
 		this.student_no = student_no;
 		this.class_ = class_;
 		this.report_year = report_year;
 		this.addon_id = addon_id;
+		this.major = major;
 	}
 
 	public String getName() {
@@ -40,6 +43,14 @@ public class CommonItems {
 
 	public void setStudent_no(String student_no) {
 		this.student_no = student_no;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
 	}
 
 	public String getClass_() {
@@ -64,5 +75,9 @@ public class CommonItems {
 	
 	public int getAddon_id() {
 		return this.addon_id;
+	}
+	
+	public int getPropertyNumber() {
+		return this.property_number;
 	}
 }

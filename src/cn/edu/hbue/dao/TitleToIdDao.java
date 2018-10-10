@@ -3,6 +3,7 @@ package cn.edu.hbue.dao;
 import cn.edu.hbue.util.JDBCUtil;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author czqmike
@@ -33,7 +34,7 @@ public class TitleToIdDao {
 	
 	/**
 	 * @param 报名标题
-	 * @return  如果查询成功，返回id，否则，返回-1
+	 * @return  如果查询成功，返回最大的id，否则，返回-1
 	 */
 	public static int selectId(String title) {
 		Connection conn = JDBCUtil.getConn();
@@ -129,5 +130,40 @@ public class TitleToIdDao {
 		
 		return title_list;
 		
+	}
+	
+	/**
+	 * @return 报名标题 与 报名人数的 HashMap 
+	 */
+	public static HashMap<String, Integer> selectOverview() {
+		Connection conn = JDBCUtil.getConn();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = "select count(title_to_id.subject_title) - 1 " +	// 每种标题的第一个为模板，所以要-1 
+				 	 "from title_to_id " + 
+					 "where subject_title = ? ";
+		
+		ArrayList<String> title_list = selectName();
+		
+		HashMap<String, Integer> ov = new HashMap();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			
+			for (int i = 0; i < title_list.size(); ++i) {
+				stmt.setString(1, title_list.get(i));
+				
+				rs = stmt.executeQuery();
+				rs.next();	// 将rs移动到首行
+				ov.put(title_list.get(i), rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeConn(stmt, conn);
+		}
+		
+		return ov;
 	}
 }

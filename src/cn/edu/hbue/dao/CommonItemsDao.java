@@ -16,7 +16,8 @@ public class CommonItemsDao {
 		boolean ok = false;
 		Connection conn = JDBCUtil.getConn();
 		PreparedStatement stmt = null;
-		String sql = "INSERT INTO `signupdb`.`common_items` (`name`, `student_no`, `class`, `report_year`, `addon_id`) VALUES (?, ?, ?, ?, ?)"; 
+		String sql = "INSERT INTO `signupdb`.`common_items` (`name`, `student_no`, `class`, `report_year`, `addon_id`, `major`) "
+				   + "VALUES (?, ?, ?, ?, ?, ?)"; 
 
 		try {
 			stmt = conn.prepareStatement(sql);
@@ -25,6 +26,7 @@ public class CommonItemsDao {
 			stmt.setString(3, ci.getClass_());
 			stmt.setString(4, ci.getReport_year());
 			stmt.setInt(5, ci.getAddon_id());
+			stmt.setString(6, ci.getMajor());
 
 			stmt.executeUpdate();
 			
@@ -56,6 +58,7 @@ public class CommonItemsDao {
 			
 			ci.setStudent_no(rs.getString("student_no"));
 			ci.setName(rs.getString("name"));
+			ci.setMajor(rs.getString("major"));
 			ci.setClass_(rs.getString("class"));
 			ci.setReport_year(rs.getString("report_year"));
 		} catch (SQLException e) {

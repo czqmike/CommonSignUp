@@ -47,6 +47,7 @@ public class GetMainServlet extends HttpServlet {
 		String page_title = new String(request.getParameter("page-title").getBytes("ISO-8859-1"), "UTF-8");
 		String name = new String(request.getParameter("name").getBytes("ISO-8859-1"), "UTF-8");
 		String student_no = new String(request.getParameter("student-no").getBytes("ISO-8859-1"), "UTF-8");
+		String major = new String(request.getParameter("major").getBytes("ISO-8859-1"), "UTF-8");
 		String class_ = new String(request.getParameter("class").getBytes("ISO-8859-1"), "UTF-8");
 		String report_year = new String(request.getParameter("report-year").getBytes("ISO-8859-1"), "UTF-8");
 		
@@ -58,7 +59,7 @@ public class GetMainServlet extends HttpServlet {
 		TitleToIdDao.insert(page_title);
 		int addon_id = TitleToIdDao.selectId(page_title);
 		
-		CommonItems commonItems = new CommonItems(name, student_no, class_, report_year, addon_id);
+		CommonItems commonItems = new CommonItems(name, student_no, major, class_, report_year, addon_id);
 		
 		// 将前4个以及id存入common_items
 		CommonItemsDao.insert(commonItems);
@@ -71,8 +72,8 @@ public class GetMainServlet extends HttpServlet {
 		Enumeration<String> paraNames = request.getParameterNames();
 		while (paraNames.hasMoreElements()) {
 			String paraName = paraNames.nextElement();
-			if (paraName.equals("page-title")  || paraName.equals("name") || 
-				paraName.equals("student-no") || paraName.equals("class") || paraName.equals("report-year")) {
+			if (paraName.equals("page-title")  || paraName.equals("name") || paraName.equals("student-no") ||
+				paraName.equals("major") || paraName.equals("class") || paraName.equals("report-year")) {
 				continue ;
 			}
 			map.put(new String(paraName.getBytes("ISO8859-1"), "UTF-8"), 
