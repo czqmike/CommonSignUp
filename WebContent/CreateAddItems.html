@@ -18,6 +18,12 @@
       
       background-color: #8080c0;  /*图片未加载成功时的备用背景色*/
     }
+
+    /* 边框效果 */
+    .dash {
+      border-style:dashed; 
+      border-width:1px;
+    }
   </style>
   <script>
     //TODO: 添加适配更多栏目类型的代码
@@ -25,7 +31,6 @@
 
     $(document).ready(function() {
 
-      // 添加项目的按钮，仅实现了添加文本框。
       $("#add-item").click(function(){
         var item = new Object;
         var item_name = $("#item-name").val();
@@ -47,7 +52,7 @@
             $("#sign-up").before(
               '<div class="input-group input-group-md">' +
               '<span class="input-group-addon">' + item_name + '</span>' +
-              '<input type="text" class="form-control" placeholder="请输入' + item_name + '" name="' + item_name + '" id="' + item_name + '">' +
+              '<input type="text" class="form-control" placeholder="请输入' + item_name + '" name="' + item_name + '" id="' + item_name + '"disabled>' +
               '</div> <br/>'
             );
 
@@ -115,15 +120,19 @@
 <body>
   <div class="container">
     <br/>
-    <div class="jumbotron">
+    <div class="jumbotron" >
       <!-- 用jumbotron整体包含这一行 -->
       <div class="row">
         <!-- 这一行分为3列，比例为3:5:4，只用比例为5的那部分,其余部分用来挤压排版 -->
         <div class="col-md-3"></div> <!--不使用-->
 
+
         <!-- 每个[name]对应数据库表中的字段名（把-改成_) -->
         <div class="col-md-5" id="main-page">
           <h2 class="text-center">报名系统编辑页面</h1>
+
+        <div class="jumbotron dash">
+
           <div class="input-group input-group-md">
             <span class="input-group-addon">姓名</span>
             <input type="text" class="form-control" placeholder="请输入姓名" aria-describedby="sizing-addon1" name="name" id="name" disabled>
@@ -164,6 +173,8 @@
           <!-- type != "submit" 仅仅作为展示用，不提交数据 -->
           <button class="btn btn-primary btn-block" type="button" name="sign-up" id="sign-up" disabled>立即报名</button>
           <br/>
+
+        </div>
 
           <div class="alert alert-info">上方为预览效果，请在下方操作添加更多栏目</div>
 
