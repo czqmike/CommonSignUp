@@ -54,7 +54,7 @@
   </script>
 </head>
   
-<body>
+<body>	
   <div class="container">
     <div class="row">
       <div class="col col-md-9">
@@ -82,18 +82,6 @@
           	  	   <td><input type="radio" name="selected" value=<%=entry.getKey() %>></td>
           	  	 </tr>
           	<% } %>
-          	<!--  
-            <tr id="tr1">
-              <td>蓝桥杯报名</td>
-              <td>20</td>
-              <td><input type="radio" name="selected" value="蓝桥杯报名"></td>
-            </tr>
-            <tr id="tr2">
-              <td>天梯赛报名</td>
-              <td>41</td>
-              <td><input type="radio" name="selected" value="天梯赛报名"></td>
-            </tr>
-            -->
           </tbody>
         </table>
 

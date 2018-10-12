@@ -30,7 +30,7 @@ import cn.edu.hbue.util.ResponseUtil;
  */
 @WebServlet("/GetMainServlet")
 public class GetMainServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3L;
        
     /**
      * @see HttpServlet#HttpServlet()
