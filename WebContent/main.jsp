@@ -66,6 +66,8 @@
 			  <option>计科</option>
 			  <option>软件</option>
 			  <option>数媒</option>
+			  <option>大数据</option>
+			  <option>信管</option>
 			  <option>物联</option>
 			  <option>电子</option>
 			  <option>其他</option>
