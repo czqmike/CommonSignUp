@@ -28,9 +28,28 @@
       background-color: #8080c0;  /*图片未加载成功时的备用背景色*/
     }
   </style>
+	<script>
+		// 检测是否有未选择的下拉菜单，若有，则弹出警告，阻止用户提交
+		$(document).ready(function() {
+			$("#submitbtn").click(function() {
+				$("select").each(function() {
+					var sindex = $(this).get(0).selectedIndex;
+					var stext = $(this).val();
+					console.log(sindex);
+					console.log(stext);
+					if (sindex == 0) {	// sindex为0时表示未进行选择
+						alert(stext);		// 告诉用户哪一项未选择（内容等同于第一个select选项）
+						event.preventDefault();			// 有未选择的下拉菜单，阻止用户继续提交表单
+						return false;		// 结束each循环
+					}
+				})
+			})
+		})
+  </script>
 </head>
 
 <body>
+<%-- <form action="404" method="POST"> --%>
 <form action="GetMainServlet" method="POST">
   <div class="container">
 	<br/>
@@ -122,7 +141,7 @@
 		    <% } %>
 		  <% } %>
 
-		  <button class="btn btn-primary  btn-block" type="submit">立即报名</button>
+		  <button id="submitbtn" class="btn btn-primary  btn-block" type="submit">立即报名</button>
 		</div>
 
 		<div class="col-md-4"><p></p></div> <!--不使用-->
