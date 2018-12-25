@@ -35,7 +35,9 @@ public class GiveExcelServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		String title = new String (request.getParameter("title").getBytes("ISO-8859-1"), "UTF-8");
+//		System.out.println("[GiveExcelServlet] title = " + title);
 		
 		try {
 			ArrayList<Report> reports = new ArrayList<Report>();

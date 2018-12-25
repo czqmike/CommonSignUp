@@ -103,14 +103,18 @@ public class TitleToIdDao {
 
 	/**
 	 * @return 全部的标题名（每种只出现一次）
+	 * @note 修改于2018_12_24 by czqmike
+	 *         只显示在visible表中is_visible为true的项
 	 */
 	public static ArrayList<String> selectName() {
 		Connection conn = JDBCUtil.getConn();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		String sql = "select subject_title from signupdb.title_to_id " + 
-					 "group by subject_title ";
+		String sql = "select title_to_id.subject_title " + 
+					 "from signupdb.title_to_id, signupdb.visible " + 
+					 "where title_to_id.subject_title = visible.subject_title and visible.is_visible = true " + 
+					 "group by title_to_id.subject_title ";
 		
 		ArrayList<String> title_list = new ArrayList<String>();
 
@@ -132,6 +136,39 @@ public class TitleToIdDao {
 		
 	}
 	
+	/**
+	 * @return 全部的标题名（每种只出现一次）
+	 * @note 移除了selectName中的visible限制
+	 */
+	public static ArrayList<String> selectAllName() {
+		Connection conn = JDBCUtil.getConn();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = "select title_to_id.subject_title " + 
+					 "from signupdb.title_to_id " + 
+					 "group by title_to_id.subject_title ";
+		
+		ArrayList<String> title_list = new ArrayList<String>();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				title_list.add(rs.getString("subject_title"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.closeConn(stmt, conn);
+		}
+		
+		return title_list;
+		
+	}
+
 	/**
 	 * @return 报名标题 与 报名人数的 HashMap 
 	 */

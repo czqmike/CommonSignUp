@@ -7,22 +7,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.edu.hbue.util.TokenUtil;
+import cn.edu.hbue.dao.VisibleDao;
 
 /**
  * @author czqmike
- * @date 2018年8月4日
- * @description 获取index页面传送的project_title，并且重定向至main.jsp
- * 				创建token并保存在服务器端的Session
+ * @date 2018年12月25日
+ * @description 当管理员点击删除报名时调用此Servlte
+ * @note 这个Servlet并不是真正的从数据库中删除所有报名信息，仅仅只是将其【隐藏】了
  */
-@WebServlet("/GetIndexServlet")
-public class GetIndexServlet extends HttpServlet {
-	private static final long serialVersionUID = 2L;
+@WebServlet("/DeleteSubjectServlet")
+public class DeleteSubjectServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetIndexServlet() {
+    public DeleteSubjectServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,12 +31,14 @@ public class GetIndexServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String token = TokenUtil.getInstance().makeToken();	// 创建token，以备后续防止重复提交表单使用
-		request.getSession().setAttribute("token", token);	// 在服务器端保存token
+		String title = request.getParameter("title");
 
-		String selected = request.getParameter("subject_title");
-		
-		response.sendRedirect("main.jsp?subject_title=" + selected);
+		if (title != null && !"".equals(title)) {
+
+			// 将visible.is_visible设为false，即可隐藏此报名
+			VisibleDao.hideSubject(title);
+
+		}
 	}
 
 	/**
@@ -45,6 +47,7 @@ public class GetIndexServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
 	}
 
 }

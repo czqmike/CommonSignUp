@@ -65,7 +65,9 @@ public class GetAddItemsServlet extends HttpServlet {
 	
 		// 取出最大的id，（也是最后插入的），然后以这个id创建附加表
 		AddonItemDao.CreateTable(items_al, TitleToIdDao.selectId(report_title));
-
+		
+		// 在visible表中插入新创建的条目，并设visible.is_visible为true
+		VisibleDao.insert(report_title);
 	}
 
 	/**

@@ -39,11 +39,43 @@ public class GetMainServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    /**
+	   判断客户端提交上来的令牌和服务器端生成的令牌是否一致
+     * @param request
+     * @return 
+     *         true 用户重复提交了表单 
+     *         false 用户没有重复提交表单
+     */
+    private boolean isRepeatSubmit(HttpServletRequest request) {
+        String client_token = request.getParameter("token");
+        //1、如果用户提交的表单数据中没有token，则用户是重复提交了表单
+        if(client_token==null){
+            return true;
+        }
+        //取出存储在Session中的token
+        String server_token = (String) request.getSession().getAttribute("token");
+        //2、如果当前用户的Session中不存在Token(令牌)，则用户是重复提交了表单
+        if(server_token==null){
+            return true;
+        }
+        //3、存储在Session中的Token(令牌)与表单提交的Token(令牌)不同，则用户是重复提交了表单
+        if(!client_token.equals(server_token)){
+            return true;
+        }
+        
+        return false;
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		if (isRepeatSubmit(request)) {
+			ResponseUtil.showError(response, "请不要重复提交表单(　ﾟ 3ﾟ)");
+			return ;
+		}
+
 		String page_title = new String(request.getParameter("page-title").getBytes("ISO-8859-1"), "UTF-8");
 		String name = new String(request.getParameter("name").getBytes("ISO-8859-1"), "UTF-8");
 		String student_no = new String(request.getParameter("student-no").getBytes("ISO-8859-1"), "UTF-8");
@@ -90,13 +122,17 @@ public class GetMainServlet extends HttpServlet {
 			}
 		}
 
-		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		if (ok) {
-			ResponseUtil.showSuccess(response, "报名成功！:)");
+			ResponseUtil.showSuccess(response, "报名成功！:)</br>"
+											 + "现在你可以关闭这个页面 or 10秒后<a href='index.jsp'>跳转至首页</a>");
+			//10秒后跳转到主页面
+			response.setHeader("refresh","10;index.jsp"); 
 		} else {
 			ResponseUtil.showError(response, "出现错误，请与管理员联系(T_T)");
 		}
+
+		request.getSession().removeAttribute("token");//移除session中的token
 	}
 
 	/**

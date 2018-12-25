@@ -32,14 +32,31 @@
       height:469px;
   } 
   </style>
-  <script> $(document).ready(function() {
+  <script> 
+  function getSelectAndVisit(url_without_param) {
+        var selected = "";
+        selected = $('input:radio[name="selected"]:checked').val(); // 获取被选中radio的value
+        if (selected == undefined) {
+            alert("请选择某一项");
+        } else {
+            // window.location.href = url_without_param + selected;
+            url = url_without_param + selected;
+            $.get(url);           // 发送Ajax Get请求
+            location.reload();    // 刷新页面 
+        }
+  }
+
+  $(document).ready(function() {
       $("#post").click(function() {
       });
       $("#modify").click(function() {
         alert("尽情期待！");
       });
       $("#delete").click(function() {
-        alert("尽情期待！");
+        if (window.confirm("确定要删除这项报名吗？")) {
+            var url_without_param = "/CommonSignUp/DeleteSubjectServlet?title=";
+            getSelectAndVisit(url_without_param);
+        }
       });
       $("#export").click(function() { 
         var selected = "";
@@ -79,7 +96,7 @@
           	  	 <tr>
           	  	   <td><%=entry.getKey() %></td>
           	  	   <td><%=entry.getValue() %></td>
-          	  	   <td><input type="radio" name="selected" value=<%=entry.getKey() %>></td>
+          	  	   <td><input type="radio" name="selected" value='<%=entry.getKey()%>'> </td>
           	  	 </tr>
           	<% } %>
           </tbody>

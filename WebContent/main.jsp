@@ -46,11 +46,24 @@
 			})
 		})
   </script>
+	<script>
+		var isCommitted = false;
+		function dosubmit(){
+			if (isCommitted==false) {
+					isCommitted = true;//提交表单后，将表单是否已经提交标识设置为true
+					var btn = document.getElementById("submitbtn");	
+					btn.disabled="disabled";// 将提交按钮设置为不可击
+					return true;//返回true让表单正常提交
+			} else {
+					return false;//返回false那么表单将不提交
+			}
+		}
+	</script>
 </head>
 
 <body>
 <%-- <form action="404" method="POST"> --%>
-<form action="GetMainServlet" method="POST">
+<form action="GetMainServlet" onsubmit="return dosubmit()" method="POST">
   <div class="container">
 	<br/>
 	<div class="jumbotron">
@@ -65,6 +78,8 @@
 		  
 		  <!--  隐藏的输入框，用来传递page_title以方便后续处理 -->
 		  <input type="hidden" name="page-title" value="<%=page_title %>">
+			<%-- 使用EL表达式取出存储在session中的token --%>
+		  <input type="hidden" name="token" value="${token}"/> 
 		  
 		  <div class="input-group input-group-md">
 			<span class="input-group-addon">姓名</span>
@@ -82,13 +97,15 @@
 			<span class="input-group-addon">专业</span>
 			<select class="form-control input-md" name="major" id="major">
 			  <option>请选择专业</option>
-			  <option>计科</option>
-			  <option>软件</option>
-			  <option>数媒</option>
-			  <option>大数据</option>
-			  <option>信管</option>
-			  <option>物联</option>
-			  <option>电子</option>
+			  <option>计算机科学与技术</option>
+			  <option>软件工程</option>
+			  <option>数字媒体技术</option>
+			  <option>网络工程</option>
+			  <option>电子信息工程</option>
+			  <option>电子信息工程（嵌入式系统及应用方向）</option>
+			  <option>电子信息工程（通信工程方向）</option>
+			  <option>物联网工程</option>
+			  <option>软件工程（虚拟现实软件开发方向）</option>
 			  <option>其他</option>
 			</select>
 		  </div>
