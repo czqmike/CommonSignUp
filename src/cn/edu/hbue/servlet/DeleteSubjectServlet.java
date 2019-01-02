@@ -31,7 +31,8 @@ public class DeleteSubjectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("title");
+		String title = new String(request.getParameter("title").getBytes("ISO-8859-1"), "UTF-8");
+		System.out.println(title);
 
 		if (title != null && !"".equals(title)) {
 
